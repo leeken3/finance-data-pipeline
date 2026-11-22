@@ -1,0 +1,25 @@
+<tr>
+  <td>
+    <input type="checkbox" name="transaction_ids" value="{{id}}" class="transaction-checkbox">
+  </td>
+  <td>
+    {{occurred_on}}
+  </td>
+  <td>
+    {{description}}
+  </td>
+  <td>
+    {{category}}
+  </td>
+  <td>
+    {{source}}
+  </td>
+  <td class="{{kind}}">
+    {{amount}}
+  </td>
+  <td>
+    <a class="edit-button" href="/transactions/{{id}}/edit">
+      Edit
+    </a>
+  </td>
+</tr>

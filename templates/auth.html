@@ -1,0 +1,23 @@
+<div class="account-card">
+  <h2>
+    {{action}}
+  </h2>
+  <form method="post">
+    <label>
+      Email
+    </label>
+    <input type="email" name="email" required>
+    <label>
+      Password
+    </label>
+    <input type="password" name="password" minlength="8" required>
+    <button>
+      {{action}}
+    </button>
+  </form>
+  <p class="muted">
+    <a href="/{{other}}">
+      {{link}}
+    </a>
+  </p>
+</div>

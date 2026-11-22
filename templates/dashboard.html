@@ -1,0 +1,232 @@
+<section class="hero">
+  <div>
+    <p class="eyebrow">
+      Personal Finance
+    </p>
+    <h2>
+      {{period_name}}
+    </h2>
+    <p class="muted">
+      Clear View Of Your Spending, Without The Spreadsheet.
+    </p>
+  </div>
+  {{period_picker}}
+</section>
+{{notice}}
+<section class="grid">
+  <div class="card metric-card income-card">
+    <div class="muted">
+      Income
+    </div>
+    <div class="metric income">
+      {{monthly_income}}
+    </div>
+  </div>
+  <div class="card metric-card expense-card">
+    <div class="muted">
+      Expenses
+    </div>
+    <div class="metric expense">
+      {{monthly_expense}}
+    </div>
+  </div>
+  <div class="card metric-card net-card">
+    <div class="muted">
+      Net Cash Flow
+    </div>
+    <div class="metric net-value {{net_class}}">
+      {{net_value}}
+    </div>
+  </div>
+</section>
+<section class="dashboard-grid">
+  <div class="card chart-card">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">
+          Six Month View
+        </p>
+        <h2>
+          Expense Trend
+        </h2>
+      </div>
+    </div>
+    <div class="columns">
+      {{columns}}
+    </div>
+  </div>
+  <div class="card chart-card">
+    <p class="eyebrow">
+      Where It Went
+    </p>
+    <h2>
+      Top Categories
+    </h2>
+    <div class="bars">
+      {{bars}}
+    </div>
+  </div>
+</section>
+<section class="yearly-section">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">
+        Full Year
+      </p>
+      <h2>
+        Yearly Totals — {{year}}
+      </h2>
+    </div>
+  </div>
+  <div class="grid yearly-grid">
+    <div class="card metric-card income-card">
+      <div class="muted">
+        Yearly Income
+      </div>
+      <div class="metric income">
+        {{yearly_income}}
+      </div>
+    </div>
+    <div class="card metric-card expense-card">
+      <div class="muted">
+        Yearly Expenses
+      </div>
+      <div class="metric expense">
+        {{yearly_expense}}
+      </div>
+    </div>
+    <div class="card metric-card net-card">
+      <div class="muted">
+        Yearly Net Cash Flow
+      </div>
+      <div class="metric net-value {{yearly_net_class}}">
+        {{yearly_net}}
+      </div>
+    </div>
+  </div>
+</section>
+<section class="two">
+  <form method="post" action="/transaction">
+    <h2>
+      Manual Entry
+    </h2>
+    <label>
+      Date
+    </label>
+    <input type="date" name="occurred_on" value="{{today}}" required>
+    <label>
+      Description
+    </label>
+    <input name="description" placeholder="E.g. Cash E-transfer..." required>
+    <label>
+      Amount
+    </label>
+    <input name="amount" type="number" step=".01" min=".01" required>
+    <label>
+      Type
+    </label>
+    <select name="kind">
+      <option value="expense">
+        Expense
+      </option>
+      <option value="income">
+        Income
+      </option>
+    </select>
+    <label>
+      Category
+    </label>
+    <select name="category">
+      {{category_options}}
+    </select>
+    <button class="blue-action">
+      Add Entry
+    </button>
+  </form>
+  <form method="post" action="/recurring">
+    <h2>
+      Automatic Monthly Entry
+    </h2>
+    <label>
+      Description
+    </label>
+    <input name="description" placeholder="E.g. Mortgage Deposit..." required>
+    <label>
+      Amount
+    </label>
+    <input name="amount" type="number" step=".01" min=".01" required>
+    <label>
+      Type
+    </label>
+    <select name="kind">
+      <option value="income">
+        Income / Deposit
+      </option>
+      <option value="expense">
+        Expense
+      </option>
+    </select>
+    <label>
+      Category
+    </label>
+    <select name="category">
+      {{category_options}}
+    </select>
+    <label>
+      Day Of Month
+    </label>
+    <input name="day" type="number" min="1" max="28" value="1" required>
+    <button class="blue-action">
+      Schedule Monthly
+    </button>
+  </form>
+</section>
+<section class="two">
+  <form method="post" action="/import" enctype="multipart/form-data">
+    <h2>
+      Credit Card Statement
+    </h2>
+    <p class="muted">
+      Upload A CSV. The Local AI Sorts Merchant Descriptions.
+    </p>
+    <label class="csv-dropzone" id="csv-dropzone" for="statement-file">
+      <span class="dropzone-icon" aria-hidden="true">⇧</span>
+      <strong id="dropzone-title">Drag &amp; Drop a CSV File</strong>
+      <span id="dropzone-detail">or choose a file from your computer</span>
+      <input type="file" name="statement" id="statement-file" accept=".csv,text/csv" required>
+    </label>
+    <button class="blue-action">
+      Import
+      &amp;
+      Categorize
+    </button>
+  </form>
+  <div class="card">
+    <h2>
+      Category Totals
+    </h2>
+    <table>
+      {{category_rows}}
+    </table>
+  </div>
+</section>
+<h2 class="activity-heading">
+  Recent Activity In {{period_name}}
+</h2>
+<table>
+  <tr>
+    <th>
+      Date
+    </th>
+    <th>
+      Description
+    </th>
+    <th>
+      Category
+    </th>
+    <th>
+      Amount
+    </th>
+  </tr>
+  {{recent_rows}}
+</table>

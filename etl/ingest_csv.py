@@ -3,13 +3,17 @@ import psycopg2
 from pathlib import Path
 from etl.config import DB_CONFIG
 
+"""
+ETL script to read CSV files and insert data into PostgreSQL.
+"""
+
 
 def read_csv(file_path):
     """Read and validate CSV file."""
     df = pd.read_csv(file_path)
 
     # Add validation for required columns
-    required_columns = ['date', 'description', 'amount', 'category']
+    required_columns = ["date", "description", "amount", "category"]
     missing = [col for col in required_columns if col not in df.columns]
 
     if missing:

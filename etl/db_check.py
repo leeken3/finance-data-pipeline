@@ -1,6 +1,9 @@
 import psycopg2
 from config import DB_CONFIG
 
+"""
+Simple script to check database connection.
+"""
 conn = psycopg2.connect(**DB_CONFIG)
 cur = conn.cursor()
 cur.execute("SELECT 1;")

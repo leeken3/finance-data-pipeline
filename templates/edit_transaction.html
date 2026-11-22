@@ -1,0 +1,38 @@
+<div class="edit-card">
+  <h2>
+    Edit transaction
+  </h2>
+  <form method="post">
+    <label>
+      Date
+    </label>
+    <input type="date" name="occurred_on" value="{{occurred_on}}" required>
+    <label>
+      Description
+    </label>
+    <input name="description" value="{{description}}" required>
+    <label>
+      Amount
+    </label>
+    <input id="transaction-amount" name="amount" type="number" step=".01" min=".01" value="{{amount}}" required>
+    <label>
+      Split
+    </label>
+    <input id="transaction-split" type="number" step="1" min="1" value="1" inputmode="numeric" placeholder="1">
+    <label>
+      Type
+    </label>
+    <select name="kind">
+      {{kinds}}
+    </select>
+    <label>
+      Category
+    </label>
+    <select name="category">
+      {{categories}}
+    </select>
+    <button class="blue-action">
+      Save Changes
+    </button>
+  </form>
+</div>

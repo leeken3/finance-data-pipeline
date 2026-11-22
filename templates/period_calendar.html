@@ -1,0 +1,28 @@
+<form class="period-picker" method="get">
+  <label>
+    Viewing Month
+  </label>
+  <button type="button" id="calendar-toggle" class="calendar-toggle">
+    {{selected_label}}
+    <span>
+      ▾
+    </span>
+  </button>
+  <input type="hidden" name="year" id="calendar-year" value="{{year}}">
+  <div id="calendar-menu" class="calendar-menu">
+    <div class="calendar-year">
+      <button type="button" data-year-step="-1">
+        ‹
+      </button>
+      <strong id="calendar-title">
+        {{year}}
+      </strong>
+      <button type="button" data-year-step="1" data-year-limit="{{year_limit}}">
+        ›
+      </button>
+    </div>
+    <div class="month-grid">
+      {{months}}
+    </div>
+  </div>
+</form>

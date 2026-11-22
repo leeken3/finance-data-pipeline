@@ -1,0 +1,19 @@
+<div class="edit-card">
+  <h2>Edit Automatic Monthly Entry</h2>
+  <form method="post">
+    <label>Description</label>
+    <input name="description" value="{{description}}" required>
+    <label>Amount</label>
+    <input name="amount" type="number" step=".01" min=".01" value="{{amount}}" required>
+    <label>Type</label>
+    <select name="kind">{{kinds}}</select>
+    <label>Category</label>
+    <select name="category">{{categories}}</select>
+    <label>Day Of Month</label>
+    <input name="day" type="number" min="1" max="28" value="{{day}}" required>
+    <button class="blue-action">Save Changes</button>
+  </form>
+  <form method="post" action="{{delete_action}}" onsubmit="return confirm('Delete this automatic monthly entry?')">
+    <button class="delete-button">Delete Entry</button>
+  </form>
+</div>

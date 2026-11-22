@@ -1,0 +1,48 @@
+<h2 class="history-title">
+  All transactions
+</h2>
+<div class="history-tabs">
+  <a class="history-tab active" href="/transactions">All Transactions</a>
+  <a class="history-tab" href="/transactions/recurring">Automatic Monthly Entries</a>
+</div>
+<form class="search-bar" method="get">
+  <div class="search-field">
+    <input type="search" name="q" value="{{search_value}}" placeholder="Search date or description">
+    <button type="submit" aria-label="Search" title="Search">
+      🔍
+    </button>
+  </div>
+</form>
+<form id="history-delete-form" method="post" action="/transactions/delete-selected">
+  <div class="bulk-actions">
+    <button id="delete-selected" type="submit" class="delete-button" disabled>
+      Delete Selected
+    </button>
+  </div>
+  <table>
+    <tr>
+      <th>
+        <input id="header-check" type="checkbox" aria-label="Select all transactions">
+      </th>
+      <th>
+        Date
+      </th>
+      <th>
+        Description
+      </th>
+      <th>
+        Category
+      </th>
+      <th>
+        Source
+      </th>
+      <th>
+        Amount
+      </th>
+      <th>
+      </th>
+    </tr>
+    {{rows}}
+  </table>
+</form>
+{{pagination}}
