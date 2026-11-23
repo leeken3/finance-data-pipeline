@@ -7,7 +7,19 @@ from utils.formatting import form
 
 
 def handle_auth(path: str, method: str, env: dict, start, db):
-    """Handle login and registration requests."""
+    """
+    Function to handle login and registration requests.
+
+    Args:
+        path (str): The request path, either "/login" or "/register".
+        method (str): The HTTP method, either "GET" or "POST".
+        env (dict): The WSGI environment dictionary.
+        start: The WSGI start_response callable.
+        db: A database connection context manager.
+
+    Returns:
+        list: A list containing the response body as bytes.
+    """
     if method == "GET":
         action = "Log in" if path == "/login" else "Create account"
         other = "register" if path == "/login" else "login"

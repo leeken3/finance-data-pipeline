@@ -1,4 +1,10 @@
-"""Editable merchant-name rules used for fast, deterministic categorization."""
+"""
+Editable merchant-name rules used for fast, deterministic categorization.
+Required for offline use and to avoid false positives from short words in merchant names.
+The rules are applied before asking Ollama for unknown merchants.
+The rules are stored in a dictionary where the keys are category names and the values are lists of merchant-name markers.
+The markers are matched against the normalized description of the transaction.
+"""
 
 MERCHANT_RULES = {
     "Groceries": [

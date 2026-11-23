@@ -4,7 +4,14 @@ from datetime import date
 
 
 def is_expense_transaction(transaction_type: str, description: str, amount) -> bool:
-    """Distinguish purchases from payments and credits in bank exports."""
+    """
+    Distinguish purchases from payments and credits in bank exports.
+
+    :param transaction_type: The type of the transaction (e.g., debit, credit).
+    :param description: The description of the transaction.
+    :param amount: The amount of the transaction.
+    :return: True if the transaction is an expense, False otherwise.
+    """
     kind = (transaction_type or "").strip().lower()
     merchant = (description or "").strip().lower()
     if kind:
@@ -22,6 +29,14 @@ def is_expense_transaction(transaction_type: str, description: str, amount) -> b
 
 
 def delete_transaction_ids(con, user_id: int, ids) -> int:
+    """
+    Delete transactions by their IDs.
+
+    :param con: The database connection object.
+    :param user_id: The ID of the user for whom to delete transactions.
+    :param ids: A list of transaction IDs to delete.
+    :return: The number of rows deleted.
+    """
     valid_ids = [int(value) for value in ids if str(value).isdigit()]
     if not valid_ids:
         return 0
@@ -34,6 +49,13 @@ def delete_transaction_ids(con, user_id: int, ids) -> int:
 
 
 def apply_recurring(con, user_id: int) -> None:
+    """
+    Apply recurring rules to generate transactions for a user.
+
+    :param con: The database connection object.
+    :param user_id: The ID of the user for whom to apply recurring rules.
+    :return: None
+    """
     today = date.today()
     for rule in con.execute(
         """
@@ -76,6 +98,14 @@ def apply_recurring(con, user_id: int) -> None:
 
 
 def yearly_totals(con, user_id: int, year: str) -> tuple[int, int]:
+    """
+    Get the total income and expense amounts for a user in a given year.
+
+    :param con: The database connection object.
+    :param user_id: The ID of the user for whom to get yearly totals.
+    :param year: The year for which to get totals.
+    :return: A tuple of (income, expense) amounts.
+    """
     totals = {
         row["kind"]: row["total"]
         for row in con.execute(

@@ -1,4 +1,6 @@
-"""Environment and application settings."""
+"""
+Environment and application settings are stored in this file. The settings are imported by other modules and can be overridden by environment variables.
+"""
 
 import os
 from pathlib import Path

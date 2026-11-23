@@ -20,6 +20,9 @@ from app import (
 )
 from routes.imports import extract_csv_payload, parse_amount
 
+"""
+Tests for the application.
+"""
 
 def test_money_and_cents():
     assert cents("$1,234.50") == 123450

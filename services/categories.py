@@ -9,13 +9,25 @@ from config.settings import CATEGORIES, OLLAMA_MODEL, OLLAMA_URL
 
 
 def normalize_description(value: str) -> str:
+    """
+    Normalize a transaction description by lowercasing and removing non-alphanumeric characters.
+
+    :param value: The transaction description to normalize.
+    :return: The normalized transaction description.
+    """
     return " ".join(
         value.lower().replace("&", " and ").replace("-", " ").replace("_", " ").split()
     )
 
 
 def merchant_rule_matches(words: str, marker: str) -> bool:
-    """Match multi-word and branded names without false positives from short words."""
+    """
+    Match multi-word and branded names without false positives from short words.
+
+    :param words: The normalized transaction description.
+    :param marker: The merchant name to match.
+    :return: True if the merchant name is found, False otherwise.
+    """
     marker = normalize_description(marker)
     if len(marker) <= 3:
         return (
@@ -26,6 +38,12 @@ def merchant_rule_matches(words: str, marker: str) -> bool:
 
 
 def category_for(description: str) -> str:
+    """
+    Determine the category for a given transaction description based on merchant rules.
+
+    :param description: The transaction description.
+    :return: The category for the transaction.
+    """
     words = normalize_description(description)
     return next(
         (
@@ -40,7 +58,15 @@ def category_for(description: str) -> str:
 def categorize_descriptions(
     descriptions, user_id=None, db_factory=None, urlopen_func=urlopen
 ):
-    """Combine prior corrections and merchant rules before asking Ollama for unknown merchants."""
+    """
+    Combine prior corrections and merchant rules before asking Ollama for unknown merchants.
+
+    :param descriptions: A list of transaction descriptions to categorize.
+    :param user_id: The ID of the user for whom to categorize transactions (optional).
+    :param db_factory: A callable that returns a database connection (optional).
+    :param urlopen_func: A function to open URLs, defaulting to urllib.request.urlopen.
+    :return: A list of categories corresponding to the input descriptions.
+    """
     fallback = [category_for(description) for description in descriptions]
     if not descriptions:
         return []

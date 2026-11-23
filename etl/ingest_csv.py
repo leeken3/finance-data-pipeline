@@ -7,9 +7,16 @@ from etl.config import DB_CONFIG
 ETL script to read CSV files and insert data into PostgreSQL.
 """
 
-
 def read_csv(file_path):
-    """Read and validate CSV file."""
+    """
+    Read and validate CSV file.
+
+    Args:
+        file_path (str): Path to the CSV file.
+
+    Returns:
+        pd.DataFrame: DataFrame containing the CSV data.
+    """
     df = pd.read_csv(file_path)
 
     # Add validation for required columns

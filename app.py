@@ -41,22 +41,41 @@ DB_PATH = DEFAULT_DB_PATH
 
 
 def db():
-    """Return an application SQLite connection."""
+    """
+    Return an application SQLite connection.
+
+    :return: SQLite connection
+    """
     return open_db(DB_PATH)
 
 
 def initialize():
-    """Create the database schema when the application starts."""
+    """
+    Create the database schema when the application starts.
+
+    :return: None
+    """
     initialize_database(DB_PATH)
 
 
 def categorize_descriptions(descriptions, user_id=None):
-    """Compatibility wrapper for categorization tests and routes."""
+    """
+    Compatibility wrapper for categorization tests and routes.
+
+    :param descriptions: List of transaction descriptions
+    :param user_id: Optional user ID for categorization context
+    :return: Categorized descriptions
+    """
     return categorize(descriptions, user_id, db, urlopen)
 
 
 def period_select_options(selected: str) -> tuple[str, str]:
-    """Return month and year option HTML for compatibility callers."""
+    """
+    Return month and year option HTML for compatibility callers.
+
+    :param selected: The selected date in the format 'YYYY-MM'
+    :return: A tuple of month and year option HTML
+    """
     from datetime import datetime
 
     year = int(selected[:4])
@@ -73,7 +92,14 @@ def period_select_options(selected: str) -> tuple[str, str]:
 
 
 def dashboard(user, period=None, notice=None):
-    """Render the dashboard via the dashboard route module."""
+    """
+    Render the dashboard via the dashboard route module.
+
+    :param user: The current user
+    :param period: The selected period
+    :param notice: An optional notice to display
+    :return: The rendered dashboard
+    """
     env = {"QUERY_STRING": ""}
     if period:
         env["QUERY_STRING"] = f"month={period}"
@@ -85,7 +111,13 @@ def dashboard(user, period=None, notice=None):
 
 
 def app(env, start):
-    """Dispatch WSGI requests to focused route modules."""
+    """
+    Dispatch WSGI requests to focused route modules.
+
+    :param env: WSGI environment
+    :param start: WSGI start_response callable
+    :return: WSGI response iterable
+    """
     initialize()
     path = env["PATH_INFO"]
     method = env["REQUEST_METHOD"]
@@ -195,7 +227,9 @@ def app(env, start):
 
     return not_found(start)
 
-
+"""
+Main application entry point.
+"""
 if __name__ == "__main__":
     initialize()
     print("Ledger running at http://127.0.0.1:8000")

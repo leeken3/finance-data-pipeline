@@ -13,7 +13,13 @@ from utils.dates import parse_statement_date
 
 
 def extract_csv_payload(raw: bytes, content_type: str = "") -> str:
-    """Extract the uploaded CSV from multipart/form-data or return plain CSV text."""
+    """
+    Extract the uploaded CSV from multipart/form-data or return plain CSV text.
+
+    :param raw: The raw bytes of the HTTP request body.
+    :param content_type: The Content-Type header of the HTTP request.
+    :return: The extracted CSV payload as a string.
+    """
     boundary = ""
     for part in content_type.split(";"):
         part = part.strip()
@@ -43,11 +49,22 @@ def extract_csv_payload(raw: bytes, content_type: str = "") -> str:
 
 
 def normalized_header(value: str) -> str:
+    """
+    Normalize a CSV header by lowercasing and removing non-alphanumeric characters.
+
+    :param value: The header string to normalize.
+    :return: The normalized header string.
+    """
     return re.sub(r"[^a-z0-9]", "", value.lower())
 
 
 def parse_amount(value: str) -> Decimal:
-    """Parse common currency formats, including $1,234.50 and (12.25)."""
+    """
+    Parse common currency formats, including $1,234.50 and (12.25).
+
+    :param value: The string to parse.
+    :return: The parsed Decimal value.
+    """
     text = (
         str(value)
         .strip()
@@ -69,6 +86,13 @@ def parse_amount(value: str) -> Decimal:
 
 
 def find_column(headers: dict, aliases: tuple) -> str:
+    """
+    Find the original header name for a normalized header from a list of aliases.
+
+    :param headers: A dictionary mapping normalized header names to original header names.
+    :param aliases: A tuple of possible normalized header names.
+    :return: The original header name.
+    """
     for normalized, original in headers.items():
         if normalized in aliases:
             return original
@@ -76,7 +100,17 @@ def find_column(headers: dict, aliases: tuple) -> str:
 
 
 def handle_import(env: dict, start, db, user, categorize_descriptions):
-    """Parse a bank statement, classify purchases, and insert unique expenses."""
+    """
+    Parse a bank statement, classify purchases, and insert unique expenses.
+    Embedded try/except blocks are used to handle errors in individual rows without stopping the entire import process.
+
+    :param env: The WSGI environment.
+    :param start: The WSGI start function.
+    :param db: The database connection.
+    :param user: The user information.
+    :param categorize_descriptions: A function to categorize transaction descriptions.
+    :return: A redirect response to the start page with a notice message.
+    """
     raw = env["wsgi.input"].read(int(env.get("CONTENT_LENGTH") or 0))
     payload = extract_csv_payload(raw, env.get("CONTENT_TYPE", ""))
     try:

@@ -5,9 +5,30 @@ from etl.config import DB_CONFIG
 """
 Module for analyzing transaction data and generating reports.
 """
-
-
 def get_monthly_summary(year=None, month=None):
+    """
+    Retrieve transaction summaries grouped by month and category.
+    Aggregates transaction data to calculate transaction counts,
+    total amounts, and average transaction amounts. Supports
+    optional filtering by year and month.
+
+    Args:
+        year (int, optional): Year to filter transactions by.
+            Defaults to None (all years).
+        month (int, optional): Month to filter transactions by (1-12).
+            Defaults to None (all months).
+
+    Returns:
+        pd.DataFrame: Monthly transaction summaries containing:
+            - month: Transaction month
+            - category: Transaction category
+            - transaction_count: Number of transactions
+            - total_amount: Sum of transaction amounts
+            - avg_amount: Average transaction amount
+
+    Raises:
+        psycopg2.Error: If a database connection or query fails.
+    """
     conn = psycopg2.connect(**DB_CONFIG)
 
     query = """
@@ -35,14 +56,23 @@ def get_monthly_summary(year=None, month=None):
     conn.close()
     return df
 
-
-"""
-Function to get total spending by category for a date range.
-"""
-
-
 def get_category_totals(start_date=None, end_date=None):
-    """Get total spending by category for a date range."""
+    """
+    Function to get total spending by category for a specified date range.
+
+    Args:
+        start_date (str, optional): Start date in 'YYYY-MM-DD' format. Defaults to None.
+        end_date (str, optional): End date in 'YYYY-MM-DD' format. Defaults to None.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing total spending by category, including:
+            - category: Transaction category
+            - transactions: Number of transactions
+            - total: Total amount spent
+            - average: Average transaction amount
+            - min_amount: Minimum transaction amount
+            - max_amount: Maximum transaction amount
+    """
     conn = psycopg2.connect(**DB_CONFIG)
 
     query = """
@@ -71,14 +101,16 @@ def get_category_totals(start_date=None, end_date=None):
     conn.close()
     return df
 
-
-"""
-Function to get total spending per month.
-"""
-
-
 def get_monthly_totals():
-    """Get total spending per month."""
+    """
+    Function to get total spending per month.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing total spending per month, including:
+            - month: Month of the transactions
+            - transactions: Number of transactions in that month
+            - total_spent: Total amount spent in that month
+    """
     conn = psycopg2.connect(**DB_CONFIG)
 
     query = """
@@ -95,14 +127,16 @@ def get_monthly_totals():
     conn.close()
     return df
 
-
-"""
-Function to generate a comprehensive expense report.
-"""
-
-
 def generate_expense_report(year=None, month=None):
-    """Generate a comprehensive expense report."""
+    """
+    Generate a comprehensive expense report.
+    Args:
+        year (int, optional): Year to filter transactions by. Defaults to None (all years).
+        month (int, optional): Month to filter transactions by (1-12). Defaults to None (all months).
+
+    Returns:
+        None: Prints the expense report to the console.
+    """
     print("=" * 60)
     print("EXPENSE REPORT")
     print("=" * 60)
@@ -123,7 +157,6 @@ def generate_expense_report(year=None, month=None):
     print(monthly.to_string(index=False))
 
     print("\n" + "=" * 60)
-
 
 """
 Main function to run the report.

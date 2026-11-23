@@ -3,6 +3,15 @@
 import sqlite3
 from pathlib import Path
 
+"""
+Initialize the SQLite database.
+This module provides functions to create the database schema and establish a connection to the SQLite database. It ensures that the necessary tables and indexes are created if they do not already exist.
+
+Functions:
+- db(db_path: Path): Returns a SQLite connection with row access by column name.
+- initialize(db_path: Path): Creates database tables and indexes if they do not exist.
+"""
+
 SCHEMA = """
 PRAGMA foreign_keys=ON;
 
@@ -54,7 +63,12 @@ ON transactions(user_id, occurred_on);
 
 
 def db(db_path: Path):
-    """Return a SQLite connection with row access by column name."""
+    """
+    Return a SQLite connection with row access by column name.
+
+    :param db_path: Path to the SQLite database file
+    :return: SQLite connection
+    """
     db_path.parent.mkdir(parents=True, exist_ok=True)
     con = sqlite3.connect(db_path)
     con.row_factory = sqlite3.Row
@@ -62,6 +76,10 @@ def db(db_path: Path):
 
 
 def initialize(db_path: Path) -> None:
-    """Create database tables and indexes if they do not exist."""
+    """
+    Create database tables and indexes if they do not exist.
+
+    :param db_path: Path to the SQLite database file
+    """
     with db(db_path) as con:
         con.executescript(SCHEMA)

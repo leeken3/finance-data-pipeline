@@ -18,6 +18,12 @@ from utils.formatting import money, cookies
 
 
 def period_calendar(selected: str) -> str:
+    """
+    Function to render the period calendar template.
+
+    :param selected:
+    :return: rendered HTML string for the period calendar.
+    """
     year = int(selected[:4])
     month = int(selected[5:7])
     months = "".join(
@@ -39,7 +45,16 @@ def period_calendar(selected: str) -> str:
 
 
 def handle_dashboard(env: dict, start, db, user, notice=None):
-    """Build dashboard context and render the dashboard template."""
+    """
+    Build dashboard context and render the dashboard template.
+
+    :param env: The WSGI environment dictionary.
+    :param start: The WSGI start_response callable.
+    :param db: A database connection context manager.
+    :param user: The authenticated user object.
+    :param notice: Optional notice message to display on the dashboard.
+    :return: A list containing the response body as bytes.
+    """
     query = parse_qs(env.get("QUERY_STRING", ""))
     month = query.get("month", [None])[0]
     year = query.get("year", [None])[0]
@@ -101,6 +116,12 @@ def handle_dashboard(env: dict, start, db, user, notice=None):
 
 
 def render_category_bars(categories) -> str:
+    """
+    Function to render category bars for the dashboard.
+
+    :param categories:
+    :return: joined HTML string for the category bars.
+    """
     if not categories:
         return render_fragment(
             "partial_message.html", message="No expenses for this month."
@@ -120,6 +141,12 @@ def render_category_bars(categories) -> str:
 
 
 def render_expense_columns(series) -> str:
+    """
+    Function to render expense columns for the dashboard.
+
+    :param series:
+    :return: joined HTML string for the expense columns.
+    """
     if not series:
         return render_fragment("partial_message.html", message="No history yet.")
     max_series = max(row["total"] for row in series)
@@ -135,6 +162,12 @@ def render_expense_columns(series) -> str:
 
 
 def render_category_rows(categories) -> str:
+    """
+    Function to render category rows for the dashboard.
+
+    :param categories:
+    :return: joined HTML string for the category rows.
+    """
     if not categories:
         return render_fragment(
             "partial_empty.html", columns="2", message="No expenses this month."
@@ -150,6 +183,12 @@ def render_category_rows(categories) -> str:
 
 
 def render_recent_rows(recent) -> str:
+    """
+    Function to render recent transaction rows for the dashboard.
+
+    :param recent:
+    :return: joined HTML string for the recent transaction rows.
+    """
     if not recent:
         return render_fragment(
             "partial_empty.html", columns="4", message="No entries yet."

@@ -1,3 +1,7 @@
+/*
+    Dashboard CSS for the finance data pipeline application
+ */
+
 .hero {
   display:flex;
   justify-content:space-between;

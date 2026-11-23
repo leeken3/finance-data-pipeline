@@ -12,7 +12,17 @@ from utils.formatting import cents, form, form_values, money
 
 
 def handle_transaction_action(path: str, method: str, env: dict, start, db, user):
-    """Handle individual edit/delete routes and bulk deletion."""
+    """
+    Handle individual edit/delete routes and bulk deletion.
+
+    :param path: The request path.
+    :param method: The HTTP method (e.g., "GET", "POST").
+    :param env: The WSGI environment dictionary.
+    :param start: The WSGI start_response callable.
+    :param db: The database connection.
+    :param user: The user information.
+    :return: A WSGI response.
+    """
     if path == "/transactions/delete-selected" and method == "POST":
         values = form_values(env)
         ids = [
@@ -94,7 +104,15 @@ def handle_transaction_action(path: str, method: str, env: dict, start, db, user
 
 
 def handle_history(env: dict, start, db, user):
-    """Render paginated, searchable transaction history."""
+    """
+    Render paginated, searchable transaction history.
+
+    :param env: The WSGI environment dictionary.
+    :param start: The WSGI start_response callable.
+    :param db: The database connection.
+    :param user: The user information.
+    :return: A WSGI response containing the transaction history page.
+    """
     query = parse_qs(env.get("QUERY_STRING", ""))
     search = query.get("q", [""])[0].strip()
     try:
@@ -156,7 +174,14 @@ def handle_history(env: dict, start, db, user):
 
 
 def handle_recurring_history(env: dict, start, db, user):
-    """Render all automatic monthly entries for the current user."""
+    """
+    Render all automatic monthly entries for the current user.
+
+    :param env: The WSGI environment dictionary.
+    :param start: The WSGI start_response callable.
+    :param db: The database connection.
+    :param user: The user information.
+    """
     with db() as con:
         rows = con.execute(
             """
@@ -177,7 +202,17 @@ def handle_recurring_history(env: dict, start, db, user):
 
 
 def handle_recurring_action(path: str, method: str, env: dict, start, db, user):
-    """Edit or delete an automatic monthly entry."""
+    """
+    Edit or delete an automatic monthly entry.
+
+    :param path: The request path.
+    :param method: The HTTP method (e.g., "GET", "POST").
+    :param env: The WSGI environment dictionary.
+    :param start: The WSGI start_response callable.
+    :param db: The database connection.
+    :param user: The user information.
+    :return: A WSGI response.
+    """
     parts = path.strip("/").split("/")
     if len(parts) != 3 or not parts[1].isdigit() or parts[2] not in ("edit", "delete"):
         return not_found(start)
@@ -265,6 +300,12 @@ def handle_recurring_action(path: str, method: str, env: dict, start, db, user):
 
 
 def render_recurring_rows(rows) -> str:
+    """
+    Render a list of recurring rows.
+
+    :param rows: A list of recurring rule rows from the database.
+    :return: A string containing the rendered HTML for the recurring rows.
+    """
     if not rows:
         return render_fragment(
             "partial_empty.html",
@@ -289,6 +330,11 @@ def render_recurring_rows(rows) -> str:
 
 
 def render_history_rows(rows) -> str:
+    """
+    Render a list of transaction history rows.
+    :param rows: A list of transaction history rows from the database.
+    :return: A string containing the rendered HTML for the transaction history rows.
+    """
     if not rows:
         return render_fragment(
             "partial_empty.html", columns="7", message="No matching transactions."
@@ -309,6 +355,14 @@ def render_history_rows(rows) -> str:
 
 
 def render_pagination(total_pages: int, current_page: int, search_param: str) -> str:
+    """
+    Render pagination links for transaction history.
+
+    :param total_pages: The total number of pages available.
+    :param current_page: The current page number being viewed.
+    :param search_param: The search query parameter to include in pagination links.
+    :return: A string containing the rendered HTML for pagination links.
+    """
     if total_pages <= 1:
         return ""
     links = "".join(
